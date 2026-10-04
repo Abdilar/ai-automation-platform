@@ -11,6 +11,6 @@ export const JobDescriptionSchema = z.object({
   visaSponsorship: z.enum(["AVAILABLE", "NOT_AVAILABLE", "UNKNOWN"]).optional(),
 });
 
-export type JobDescription = z.infer<
+export type JobDescriptionType = z.infer<
   typeof JobDescriptionSchema
 >;
