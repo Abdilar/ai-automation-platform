@@ -10,3 +10,7 @@ export const JobDescriptionSchema = z.object({
   workMode: z.enum(["ONSITE", "REMOTE", "HYBRID"]).optional(),
   visaSponsorship: z.enum(["AVAILABLE", "NOT_AVAILABLE", "UNKNOWN"]).optional(),
 });
+
+export type JobDescription = z.infer<
+  typeof JobDescriptionSchema
+>;
