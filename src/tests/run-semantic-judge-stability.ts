@@ -3,7 +3,7 @@ import "dotenv/config";
 
 import { semanticJudgeTestCases } from "./semantic-judge.test-cases";
 import { runSemanticJudgeStability } from "./semantic-judge.stability-runner";
-import { OpenAISemanticJudge } from "../infrastructure/llm-provider/openai/openai-semantic.judge";
+import { OpenAISemanticJudge } from "../infrastructure/llm-provider";
 
 async function main() {
   const repetitions = Number(process.argv[2] ?? "5");

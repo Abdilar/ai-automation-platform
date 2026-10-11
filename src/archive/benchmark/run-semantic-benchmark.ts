@@ -12,7 +12,7 @@ import { realJobScenarios } from "../../tests/job-description-real.scenarios";
 
 
 
-import { OpenAISemanticJudge } from "../../infrastructure/llm-provider/openai/openai-semantic.judge";
+import { OpenAISemanticJudge } from "../../infrastructure/llm-provider";
 import { runSemanticBenchmark } from "./job-description.semantic-benchmark";
 
 
