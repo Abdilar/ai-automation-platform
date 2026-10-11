@@ -1,14 +1,15 @@
 import { z } from "zod";
 
 export const JobDescriptionSchema = z.object({
-  description: z.string().optional(),
-  skills: z.array(z.string()).default([]),
-  responsibilities: z.array(z.string()).default([]),
-  requirements: z.array(z.string()).default([]),
-  preferredQualifications: z.array(z.string()).default([]),
-  benefits: z.array(z.string()).default([]),
-  workMode: z.enum(["ONSITE", "REMOTE", "HYBRID"]).optional(),
-  visaSponsorship: z.enum(["AVAILABLE", "NOT_AVAILABLE", "UNKNOWN"]).optional(),
+  description: z.string().nullable(),
+  companyDescription: z.string().nullable(),
+  skills: z.array(z.string()),
+  responsibilities: z.array(z.string()),
+  requirements: z.array(z.string()),
+  preferredQualifications: z.array(z.string()),
+  benefits: z.array(z.string()),
+  workMode: z.enum(["ONSITE", "REMOTE", "HYBRID"]).nullable(),
+  visaSponsorship: z.enum(["AVAILABLE", "NOT_AVAILABLE"]).nullable(),
 });
 
 export type JobDescriptionType = z.infer<
