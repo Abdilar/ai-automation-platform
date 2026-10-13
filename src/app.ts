@@ -1,11 +1,15 @@
 import fastify from "fastify";
-import { jobRoutes } from "./api";
+import { errorHandler, jobRoutes } from "./api";
 
 export function buildApp() {
   const app = fastify({
-    logger: true,
+    logger: {
+      redact: ['req.headers.x-api-key', 'req.headers.authorization']
+    },
   });
 
+  app.setErrorHandler(errorHandler)
+  
   app.get("/health", async () => ({
     status: "ok",
   }));
