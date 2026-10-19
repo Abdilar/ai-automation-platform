@@ -1,0 +1,6 @@
+export type LLMErrorCodeType = 
+  | "LLM_RATE_LIMIT"
+  | "LLM_TIMEOUT"
+  | "LLM_INVALID_RESPONSE"
+  | "LLM_AUTHENTICATION_ERROR"
+  | "LLM_PROVIDER_ERROR";
