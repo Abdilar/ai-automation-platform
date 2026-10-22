@@ -1,50 +1,50 @@
-export const ERROR_STATUS = {
+export const HTTP_ERRORS = {
   "VALIDATION_ERROR": {
-    STATUS_CODE: 400,
-    CODE: "VALIDATION_ERROR",
-    MESSAGE: "Invalid input",
-    MESSAGE_FA: "ورودی نامعتبر"
+    statusCode: 400,
+    code: "VALIDATION_ERROR",
+    message: "Invalid input",
+    messageFa: "ورودی نامعتبر"
   }, 
   "UNAUTHORIZED": {
-    STATUS_CODE: 401,
-    CODE: "UNAUTHORIZED",
-    MESSAGE: "",
-    MESSAGE_FA: "API Key نامعتبر"
+    statusCode: 401,
+    code: "UNAUTHORIZED",
+    message: "",
+    messageFa: "API Key نامعتبر"
   },
   "NOT_FOUND": {
-    STATUS_CODE: 404,
-    CODE: "NOT_FOUND",
-    MESSAGE: "",
-    MESSAGE_FA: "Endpoint ناموجود"
+    statusCode: 404,
+    code: "NOT_FOUND",
+    message: "",
+    messageFa: "Endpoint ناموجود"
   },
   "RATE_LIMIT_EXCEEDED": {
-    STATUS_CODE: 429,
-    CODE: "RATE_LIMIT_EXCEEDED",
-    MESSAGE: "LLM provider rate limit exceeded",
-    MESSAGE_FA: "محدودیت درخواست"
+    statusCode: 429,
+    code: "RATE_LIMIT_EXCEEDED",
+    message: "LLM provider rate limit exceeded",
+    messageFa: "محدودیت درخواست"
   },
   "LLM_PROVIDER_ERROR": {
-    STATUS_CODE: 502,
-    CODE: "LLM_PROVIDER_ERROR",
-    MESSAGE: "AI service is temporarily unavailable",
-    MESSAGE_FA: "خطای سرویس LLM"
+    statusCode: 502,
+    code: "LLM_PROVIDER_ERROR",
+    message: "AI service is temporarily unavailable",
+    messageFa: "خطای سرویس LLM"
   },
   "SERVICE_UNAVAILABLE": {
-    STATUS_CODE: 503,
-    CODE: "SERVICE_UNAVAILABLE",
-    MESSAGE: "",
-    MESSAGE_FA: "سرویس موقتاً در دسترس نیست"
+    statusCode: 503,
+    code: "SERVICE_UNAVAILABLE",
+    message: "",
+    messageFa: "سرویس موقتاً در دسترس نیست"
   },
   "LLM_TIMEOUT": {
-    STATUS_CODE: 504,
-    CODE: "LLM_TIMEOUT",
-    MESSAGE: "LLM provider request timed out",
-    MESSAGE_FA: "پایان مهلت پاسخ Provider"
+    statusCode: 504,
+    code: "LLM_TIMEOUT",
+    message: "LLM provider request timed out",
+    messageFa: "پایان مهلت پاسخ Provider"
   },
   "INTERNAL_SERVER_ERROR": {
-    STATUS_CODE: 500,
-    CODE: "INTERNAL_SERVER_ERROR",
-    MESSAGE: "",
-    MESSAGE_FA: "خطای پیش‌بینی‌نشده سرور"
+    statusCode: 500,
+    code: "INTERNAL_SERVER_ERROR",
+    message: "",
+    messageFa: "خطای پیش‌بینی‌نشده سرور"
   }
-}
+} as const

@@ -3,7 +3,7 @@ import { OpenAIProvider } from "../../infrastructure";
 import { LLMJobDescriptionExtractor } from "../../application";
 import { ExtractJobRequestSchema } from "../schema";
 import { authenticateApiKey } from "../middleware";
-import { AppError, ERROR_STATUS } from "../error";
+import { AppError, HTTP_ERRORS } from "../error";
 import { STATUS_CODES } from "node:http";
 
 export async function jobRoutes(app: FastifyInstance): Promise<void> {
@@ -17,9 +17,9 @@ export async function jobRoutes(app: FastifyInstance): Promise<void> {
 
     if (!parsed.success) {
       throw new AppError(
-        ERROR_STATUS.VALIDATION_ERROR.STATUS_CODE,
-        ERROR_STATUS.VALIDATION_ERROR.CODE,
-        ERROR_STATUS.VALIDATION_ERROR.MESSAGE_FA,
+        HTTP_ERRORS.VALIDATION_ERROR.statusCode,
+        HTTP_ERRORS.VALIDATION_ERROR.code,
+        HTTP_ERRORS.VALIDATION_ERROR.messageFa,
       );
     }
 
@@ -31,11 +31,11 @@ export async function jobRoutes(app: FastifyInstance): Promise<void> {
       });
     } catch (error) {
       request.log.error({ error }, "Job extraction failed");
-      
+
       throw new AppError(
-        ERROR_STATUS.LLM_PROVIDER_ERROR.STATUS_CODE,
-        ERROR_STATUS.LLM_PROVIDER_ERROR.CODE,
-        ERROR_STATUS.LLM_PROVIDER_ERROR.MESSAGE_FA,
+        HTTP_ERRORS.LLM_PROVIDER_ERROR.statusCode,
+        HTTP_ERRORS.LLM_PROVIDER_ERROR.code,
+        HTTP_ERRORS.LLM_PROVIDER_ERROR.messageFa,
       );
     }
   });
