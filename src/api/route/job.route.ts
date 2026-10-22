@@ -4,7 +4,6 @@ import { LLMJobDescriptionExtractor } from "../../application";
 import { ExtractJobRequestSchema } from "../schema";
 import { authenticateApiKey } from "../middleware";
 import { AppError, HTTP_ERRORS } from "../error";
-import { STATUS_CODES } from "node:http";
 
 export async function jobRoutes(app: FastifyInstance): Promise<void> {
   const provider = new OpenAIProvider();
