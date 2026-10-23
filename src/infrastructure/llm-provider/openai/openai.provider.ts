@@ -1,6 +1,7 @@
 import "dotenv/config";
 import OpenAI from "openai";
 import type { IGenerateOptions, ILLMProvider } from "../llm-provider.model";
+import { llmErrorHandler } from "../../../api";
 
 export class OpenAIProvider implements ILLMProvider {
   private readonly client: OpenAI;
@@ -34,30 +35,34 @@ export class OpenAIProvider implements ILLMProvider {
   }
 
   async generate<T>(options: IGenerateOptions<T>): Promise<T> {
-    const response = await this.client.responses.create({
-      model: this.model,
-      input: options.prompt,
-      ...(this.temperature !== undefined
-        ? { temperature: this.temperature }
-        : {}),
-      text: {
-        format: {
-          type: "json_schema",
-          name: "structured_output",
-          strict: true,
-          schema: options.schema as Record<string, unknown>,
+    try {
+      const response = await this.client.responses.create({
+        model: this.model,
+        input: options.prompt,
+        ...(this.temperature !== undefined
+          ? { temperature: this.temperature }
+          : {}),
+        text: {
+          format: {
+            type: "json_schema",
+            name: "structured_output",
+            strict: true,
+            schema: options.schema as Record<string, unknown>,
+          },
         },
-      },
-    });
+      });
 
-    const output = response.output_text;
+      const output = response.output_text;
 
-    if (!output) {
-      throw new Error(
-        "OpenAI returned an empty response for structured output.",
-      );
+      if (!output) {
+        throw new Error(
+          "OpenAI returned an empty response for structured output.",
+        );
+      }
+
+      return JSON.parse(output) as T;
+    } catch (error) {
+      throw llmErrorHandler(error)
     }
-
-    return JSON.parse(output) as T;
   }
 }
