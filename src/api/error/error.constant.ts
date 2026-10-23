@@ -48,3 +48,31 @@ export const HTTP_ERRORS = {
     messageFa: "خطای پیش‌بینی‌نشده سرور"
   }
 } as const
+
+export const LLM_HTTP_ERRORS = {
+  LLM_RATE_LIMIT: {
+    statusCode: 503,
+    code: "LLM_RATE_LIMIT",
+    message: "AI service is temporarily busy",
+  },
+  LLM_TIMEOUT: {
+    statusCode: 504,
+    code: "LLM_TIMEOUT",
+    message: "AI service request timed out",
+  },
+  LLM_INVALID_RESPONSE: {
+    statusCode: 502,
+    code: "LLM_INVALID_RESPONSE",
+    message: "AI service returned an invalid response",
+  },
+  LLM_AUTHENTICATION_ERROR: {
+    statusCode: 503,
+    code: "LLM_AUTHENTICATION_ERROR",
+    message: "AI service is unavailable",
+  },
+  LLM_PROVIDER_ERROR: {
+    statusCode: 502,
+    code: "LLM_PROVIDER_ERROR",
+    message: "AI service is temporarily unavailable",
+  },
+} as const;
