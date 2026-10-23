@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { LLMError } from "../llm";
+import { LLM_HTTP_ERRORS } from "../error.constant";
 
 export function llmErrorHandler(error: unknown): LLMError {
   if (error instanceof LLMError) {
@@ -7,26 +8,38 @@ export function llmErrorHandler(error: unknown): LLMError {
   }
 
   if (error instanceof OpenAI.APIConnectionTimeoutError) {
-    return new LLMError("LLM_TIMEOUT", "LLM provider request timed out", {
-      cause: error,
-    });
+    return new LLMError(
+      LLM_HTTP_ERRORS.LLM_TIMEOUT.code,
+      LLM_HTTP_ERRORS.LLM_TIMEOUT.message,
+      {
+        cause: error,
+      },
+    );
   }
 
   if (error instanceof OpenAI.RateLimitError) {
-    return new LLMError("LLM_RATE_LIMIT", "LLM provider rate limit exceeded", {
-      cause: error,
-    });
+    return new LLMError(
+      LLM_HTTP_ERRORS.LLM_RATE_LIMIT.code,
+      LLM_HTTP_ERRORS.LLM_RATE_LIMIT.message,
+      {
+        cause: error,
+      },
+    );
   }
 
   if (error instanceof OpenAI.AuthenticationError) {
     return new LLMError(
-      "LLM_AUTHENTICATION_ERROR",
-      "LLM provider authentication failed",
+      LLM_HTTP_ERRORS.LLM_AUTHENTICATION_ERROR.code,
+      LLM_HTTP_ERRORS.LLM_AUTHENTICATION_ERROR.message,
       { cause: error },
     );
   }
 
-  return new LLMError("LLM_PROVIDER_ERROR", "LLM provider request failed", {
-    cause: error,
-  });
+  return new LLMError(
+    LLM_HTTP_ERRORS.LLM_PROVIDER_ERROR.code,
+    LLM_HTTP_ERRORS.LLM_PROVIDER_ERROR.message,
+    {
+      cause: error,
+    },
+  );
 }
