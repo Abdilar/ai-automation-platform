@@ -35,6 +35,14 @@ export function llmErrorHandler(error: unknown): LLMError {
     );
   }
 
+  if (error instanceof OpenAI.APIConnectionError) {
+    return new LLMError(
+      LLM_HTTP_ERRORS.LLM_PROVIDER_ERROR.code,
+      "Unable to connect to LLM provider",
+      { cause: error },
+    );
+  }
+
   return new LLMError(
     LLM_HTTP_ERRORS.LLM_PROVIDER_ERROR.code,
     LLM_HTTP_ERRORS.LLM_PROVIDER_ERROR.message,
