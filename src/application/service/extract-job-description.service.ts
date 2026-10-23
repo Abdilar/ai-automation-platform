@@ -5,6 +5,7 @@ import {
   JobDescriptionType,
 } from "../../domain/job/job-description.schema";
 import { ILLMProvider } from "../../infrastructure/llm-provider/llm-provider.model";
+import { LLM_HTTP_ERRORS, LLMError } from "../../api";
 
 export class LLMJobDescriptionExtractor implements IJobDescriptionExtractor {
   constructor(private readonly llmProvider: ILLMProvider) {}
@@ -17,10 +18,17 @@ export class LLMJobDescriptionExtractor implements IJobDescriptionExtractor {
       schema: z.toJSONSchema(JobDescriptionSchema),
     });
 
-    console.dir(result, {
-      depth: null,
-    });
-    return JobDescriptionSchema.parse(result);
+    const validated = JobDescriptionSchema.safeParse(result);
+
+    if (!validated.success) {
+      throw new LLMError(
+        LLM_HTTP_ERRORS.LLM_INVALID_RESPONSE.code,
+        "LLM output does not match the expected schema",
+        { cause: validated.error },
+      );
+    }
+
+    return validated.data;
   }
 
   private buildPrompt(content: string): string {
