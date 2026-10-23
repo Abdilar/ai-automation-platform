@@ -1,7 +1,8 @@
 import "dotenv/config";
 import OpenAI from "openai";
 import type { IGenerateOptions, ILLMProvider } from "../llm-provider.model";
-import { llmErrorHandler } from "../../../api";
+import { LLMError, llmErrorHandler } from "../../../api";
+import { ZodError } from "zod";
 
 export class OpenAIProvider implements ILLMProvider {
   private readonly client: OpenAI;
@@ -62,7 +63,15 @@ export class OpenAIProvider implements ILLMProvider {
 
       return JSON.parse(output) as T;
     } catch (error) {
-      throw llmErrorHandler(error)
+      if (error instanceof ZodError) {
+        throw new LLMError(
+          "LLM_INVALID_RESPONSE",
+          "LLM returned an invalid response",
+          { cause: error },
+        );
+      }
+
+      throw llmErrorHandler(error);
     }
   }
 }
