@@ -1,8 +1,7 @@
 import "dotenv/config";
 import OpenAI from "openai";
 import type { IGenerateOptions, ILLMProvider } from "../llm-provider.model";
-import { LLMError, llmErrorHandler } from "../../../api";
-import { ZodError } from "zod";
+import { LLM_HTTP_ERRORS, LLMError, llmErrorHandler } from "../../../api";
 
 export class OpenAIProvider implements ILLMProvider {
   private readonly client: OpenAI;
@@ -36,8 +35,9 @@ export class OpenAIProvider implements ILLMProvider {
   }
 
   async generate<T>(options: IGenerateOptions<T>): Promise<T> {
+    let response: Awaited<ReturnType<OpenAI["responses"]["create"]>>;
     try {
-      const response = await this.client.responses.create({
+      response = await this.client.responses.create({
         model: this.model,
         input: options.prompt,
         ...(this.temperature !== undefined
@@ -52,26 +52,27 @@ export class OpenAIProvider implements ILLMProvider {
           },
         },
       });
+    } catch (error) {
+      throw llmErrorHandler(error);
+    }
 
-      const output = response.output_text;
+    const output = response.output_text;
 
-      if (!output) {
-        throw new Error(
-          "OpenAI returned an empty response for structured output.",
-        );
-      }
+    if (!output) {
+      throw new LLMError(
+        LLM_HTTP_ERRORS.LLM_INVALID_RESPONSE.code,
+        "OpenAI returned an empty structured response",
+      );
+    }
 
+    try {
       return JSON.parse(output) as T;
     } catch (error) {
-      if (error instanceof ZodError) {
-        throw new LLMError(
-          "LLM_INVALID_RESPONSE",
-          "LLM returned an invalid response",
-          { cause: error },
-        );
-      }
-
-      throw llmErrorHandler(error);
+      throw new LLMError(
+        LLM_HTTP_ERRORS.LLM_INVALID_RESPONSE.code,
+        LLM_HTTP_ERRORS.LLM_INVALID_RESPONSE.message,
+        { cause: error },
+      );
     }
   }
 }
