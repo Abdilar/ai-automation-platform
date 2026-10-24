@@ -1,5 +1,6 @@
 import fastify from "fastify";
 import { errorHandler, jobRoutes } from "./api";
+import { registerRateLimit } from "./api/plugin";
 
 export function buildApp() {
   const app = fastify({
@@ -14,7 +15,11 @@ export function buildApp() {
     status: "ok",
   }));
 
-  app.register(jobRoutes, {prefix: '/api/v1/jobs'})
+  app.register(async (protectedApp) => {
+    await registerRateLimit(protectedApp)
+
+    await protectedApp.register(jobRoutes, {prefix: '/api/v1/jobs'})
+  })
 
   return app
 }

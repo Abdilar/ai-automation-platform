@@ -11,7 +11,14 @@ export async function jobRoutes(app: FastifyInstance): Promise<void> {
 
   app.addHook("onRequest", authenticateApiKey);
 
-  app.post("/extract", async (request, reply) => {
+  app.post("/extract", {
+    config: {
+      rateLimit: {
+        max: 200,
+        timeWindow: "1 minute",
+      }
+    }
+  }, async (request, reply) => {
     const parsed = ExtractJobRequestSchema.safeParse(request.body);
 
     if (!parsed.success) {

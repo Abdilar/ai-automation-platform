@@ -4,7 +4,7 @@ import type { FastifyInstance } from 'fastify';
 export async function registerRateLimit(app: FastifyInstance) : Promise<void> {
   await app.register(rateLimit, {
     global: false,
-    max: 10,
+    max: 200,
     timeWindow: '1 minute',
     keyGenerator: (request) => {
       return request.ip
