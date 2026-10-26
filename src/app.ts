@@ -14,7 +14,7 @@ export function buildApp() {
 
   app.setErrorHandler(errorHandler)
   
-  app.get("/health", async () => ({
+  app.get("/api/v1/health", async () => ({
     status: "ok",
   }));
 
