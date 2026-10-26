@@ -3,8 +3,11 @@ import { errorHandler, jobRoutes } from "./api";
 import { registerRateLimit } from "./api/plugin";
 
 export function buildApp() {
+  const isProduction = process.env.NODE_ENV === "production";
+
   const app = fastify({
     logger: {
+      level: isProduction ? "info" : "debug",
       redact: ['req.headers.x-api-key', 'req.headers.authorization']
     },
   });
